@@ -17,6 +17,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lms.LMSBorrower.POJO.Author;
 import com.lms.LMSBorrower.POJO.BookLoans;
+import com.lms.LMSBorrower.POJO.Borrower;
 import com.lms.LMSBorrower.Service.BorrowerService;
 
 @RestController 
@@ -67,9 +68,9 @@ public class CheckoutController{
 	}
 	
 	
-	@GetMapping (value="/borrower/authors/{authorId}", produces = {"application/xml", "application/json"}) 
-	public Optional<Author> readtest(@PathVariable Integer authorId) {
-		 return borrowerService.readAuthorbyId(authorId);
+	@GetMapping (value="/borrower/{cardNo}", produces = {"application/xml", "application/json"}, consumes = {"application/xml", "application/json"}) 
+	public Optional<Borrower> readtest(@PathVariable Integer cardNo) {
+		 return borrowerService.readBorrowerbyId(cardNo);
 	 }
 }
 
