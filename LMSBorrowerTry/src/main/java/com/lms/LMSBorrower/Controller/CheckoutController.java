@@ -1,8 +1,8 @@
 package com.lms.LMSBorrower.Controller;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lms.LMSBorrower.POJO.Author;
 import com.lms.LMSBorrower.POJO.BookLoans;
 import com.lms.LMSBorrower.POJO.Borrower;
 import com.lms.LMSBorrower.Service.BorrowerService;
@@ -38,9 +36,10 @@ public class CheckoutController{
 		return HttpStatus.OK;
 	}
 	
-	@PutMapping(value="/borrower/checkout", consumes = {"application/xml", "application/json"}) 
+	@PutMapping(value="/borrower/checkout", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
+			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }) 
 	
-	public  ResponseEntity<?> writeLoans(@RequestHeader("Accept") String accept, @RequestBody BookLoans bookLoans){
+	public  ResponseEntity<?> writeLoans(@RequestBody BookLoans bookLoans){
 		
 		boolean cardExists = borrowerService.ifCardExistsBorrower(bookLoans.getBlCompKey().getBorrower().getCardNo());
 		boolean branchExists = borrowerService.ifCardExistsBranch(bookLoans.getBlCompKey().getBranch().getBranchId());
@@ -53,10 +52,9 @@ public class CheckoutController{
 			boolean check = borrowerService.updateCopiesCheckout(bookLoans);
 			
 			if (check== true) {
-			borrowerService.writeLoans(bookLoans);
-			borrowerService.readEmbedded(bookLoans);
-			return new ResponseEntity<BookLoans>(bookLoans, HttpStatus.CREATED);
-			
+				borrowerService.writeLoans(bookLoans);
+				borrowerService.readEmbedded(bookLoans);
+				return new ResponseEntity<BookLoans>(bookLoans, HttpStatus.CREATED);
 			}
 			else {
 				return new ResponseEntity<String>("Copies less than 0", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -68,7 +66,8 @@ public class CheckoutController{
 	}
 	
 	
-	@GetMapping (value="/borrower/{cardNo}", produces = {"application/xml", "application/json"}, consumes = {"application/xml", "application/json"}) 
+	@GetMapping (value="/borrower/{cardNo}", 
+			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } ) 
 	public Optional<Borrower> readtest(@PathVariable Integer cardNo) {
 		 return borrowerService.readBorrowerbyId(cardNo);
 	 }
