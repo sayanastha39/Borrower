@@ -1,6 +1,6 @@
 package com.lms.LMSBorrower.POJO;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -10,22 +10,21 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tbl_book_loans")
 public class BookLoans implements Serializable{
-
-
-	private static final long serialVersionUID = 9187897266122342615L;
+	
+	private static final long serialVersionUID = 6397133592854929238L;
 
 	@EmbeddedId
 	private BookLoansCompositeKey blCompKey;
 	
 	@Column(name = "dateOut")
-	private Date dateOut;
+	private Timestamp dateOut;
 	
 	@Column(name = "dueDate")
-	private Date dueDate;
+	private Timestamp dueDate;
 	
 	public BookLoans() {}
 	
-	public BookLoans(BookLoansCompositeKey blCompKey, Date dateOut, Date dueDate) {
+	public BookLoans(BookLoansCompositeKey blCompKey, Timestamp dateOut, Timestamp dueDate) {
 		super();
 		this.blCompKey = blCompKey;
 		this.dateOut = dateOut;
@@ -40,19 +39,19 @@ public class BookLoans implements Serializable{
 		this.blCompKey = blCompKey;
 	}
 
-	public Date getDateOut() {
+	public Timestamp getDateOut() {
 		return dateOut;
 	}
 
-	public void setDateOut(Date dateOut) {
+	public void setDateOut(Timestamp dateOut) {
 		this.dateOut = dateOut;
 	}
 
-	public Date getDueDate() {
+	public Timestamp getDueDate() {
 		return dueDate;
 	}
 
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(Timestamp dueDate) {
 		this.dueDate = dueDate;
 	}
 
@@ -101,5 +100,4 @@ public class BookLoans implements Serializable{
 	public String toString() {
 		return "BookLoans [blCompKey=" + blCompKey + ", dateOut=" + dateOut + ", dueDate=" + dueDate + "]";
 	}
-
 }
