@@ -1,2 +1,3 @@
 # Borrower
-commit lms
+commit lms ci
+cd test commit
